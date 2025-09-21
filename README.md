@@ -23,4 +23,15 @@ pip install requests # Para poder realizar "consultas" a la base de datos fictic
 
 ## Ejecución
 
-Se recomienda ejecutar main.py, el cuál contiene el servicio de fastAPI, luego, ejecutamos receiver.py, que se mantiene a la espera de mensajes, y finalmente, ejecutamos publish.py, que se encarga de enviar un "anuncio" de terremoto falso.
+Se recomienda ejecutar main.py, el cuál contiene el servicio de fastAPI. Para eso, debemos ejecutar main.py como:
+
+````
+fastapi dev main.py
+````
+
+ luego, ejecutamos receiver.py, que se mantiene a la espera de mensajes, y finalmente, ejecutamos publish.py, que se encarga de enviar un "anuncio" de terremoto falso.
+
+ ````
+python receiver.py
+python publish.py
+ ````

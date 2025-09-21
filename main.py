@@ -4,6 +4,8 @@ from fastapi.responses import HTMLResponse
 
 app = FastAPI()
 
+# fastapi dev main.py
+
 # Datos ficticios, hay que incorporar la latitud y longitud de estas pruebas.
 earthquakes = [
         {"magnitude": 7.8, "location": "Valparaíso", "date": "2024-03-15", "depth": "35 km"},
