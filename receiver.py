@@ -4,6 +4,7 @@ import requests
 
 from typing import Callable, Optional
 from geopy.distance import geodesic
+from tabulate import tabulate
 
 # Pip install pika
 # pip install geopy
@@ -62,7 +63,7 @@ class Suscribers:
             if distance <= 500:
                 print(f"La distancia entre yo (suscriptor) y la ubicación del terremoto es de {distance:.2f} KM")
                 print("soy válido\n")
-                self.consultar_datos()
+                self.consultar_datos(sismo_percibido=True)
             else:
                 print(f"La distancia entre yo (suscriptor) y la ubicación del terremoto es de {distance:.2f} KM")
                 print("No soy válido")
@@ -81,7 +82,7 @@ class Suscribers:
         return distance
     
     # La siguiente función tiene como propósito consultar los datos de fastAPI para una posterior implementación utilizando los criterios de la tarea.
-    def consultar_datos(self, api_url: str = "http://localhost:8000/api/terremotos"):
+    def consultar_datos(self, api_url: str = "http://localhost:8000/api/terremotos", sismo_percibido: bool = False):
         try:
             response = requests.get(api_url)
             response.raise_for_status()
@@ -89,8 +90,27 @@ class Suscribers:
             data = response.json()
             terremotos = data.get("terremotos", [])
 
+            
+            tabla = []
             for terremoto in terremotos:
-                print(f"- {terremoto['location']}: Magnitud {terremoto['magnitude']}")
+                fila = [
+                    terremoto.get("location", "N/A"),
+                    terremoto.get("magnitude", "N/A"),
+                    terremoto.get("depth", "N/A"),
+                    terremoto.get("date", "N/A"),
+                    terremoto.get("latitud", "N/A"),
+                    terremoto.get("longitud", "N/A"),
+                    "Sí" if terremoto.get("percibido") else "No"
+                ]
+
+                
+                if terremoto.get("percibido"):
+                    fila = [f"*** {campo} ***" for campo in fila]
+
+                tabla.append(fila)
+
+            
+            print(tabulate(tabla, headers=["Ubicación", "Magnitud", "Profundidad", "Fecha","Latitud","Longitud","Percibido"], tablefmt="fancy_grid"))
 
             return terremotos
 
