@@ -6,14 +6,14 @@ app = FastAPI()
 
 # fastapi dev main.py
 
-# Datos ficticios, hay que incorporar la latitud y longitud de estas pruebas (percibido es true(se ennegrece los datos) o false).
+#
 earthquakes = [
-    {"magnitude": 7.8, "location": "23 km al SE de Valparaíso", "date": "2024-03-15 18:29:13", "depth": "135 km", "percibido": False, "latitud": -33.15, "longitud": -71.40},
-    {"magnitude": 6.2, "location": "129 km al NE de Santiago", "date": "2024-02-28 18:02:59", "depth": "12 km", "percibido": False, "latitud": -32.50, "longitud": -69.80},
-    {"magnitude": 8.1, "location": "81 km al NO de Antofagasta", "date": "2024-01-10 16:34:34", "depth": "45 km", "percibido": False, "latitud": -23.20, "longitud": -70.80},
-    {"magnitude": 5.9, "location": "20 km al N de Concepción", "date": "2024-01-05 14:37:37", "depth": "49 km", "percibido": False, "latitud": -36.60, "longitud": -72.95},
-    {"magnitude": 7.3, "location": "68 km al S de Iquique", "date": "2023-12-20 14:31:27", "depth": "28 km", "percibido": False, "latitud": -20.80, "longitud": -70.20},
-    {"magnitude": 6.7, "location": "54 km al E de La Serena", "date": "2023-11-18 13:50:44", "depth": "40 km", "percibido": True,  "latitud": -29.90, "longitud": -70.20},
+    {"magnitude": 7.8, "location": "23 km al SE de Valparaíso", "date": "2024-03-15 18:29:13", "depth": "135 km", "latitud": -33.15, "longitud": -71.40},
+    {"magnitude": 6.2, "location": "129 km al NE de Santiago", "date": "2024-02-28 18:02:59", "depth": "12 km", "latitud": -32.50, "longitud": -69.80},
+    {"magnitude": 8.1, "location": "81 km al NO de Antofagasta", "date": "2024-01-10 16:34:34", "depth": "45 km", "latitud": -23.20, "longitud": -70.80},
+    {"magnitude": 5.9, "location": "20 km al N de Concepción", "date": "2024-01-05 14:37:37", "depth": "49 km", "latitud": -36.60, "longitud": -72.95},
+    {"magnitude": 7.3, "location": "68 km al S de Iquique", "date": "2023-12-20 14:31:27", "depth": "28 km", "latitud": -20.80, "longitud": -70.20},
+    {"magnitude": 6.7, "location": "54 km al E de La Serena", "date": "2023-11-18 13:50:44", "depth": "40 km", "latitud": -29.90, "longitud": -70.20},
 ]
 
 
@@ -47,9 +47,8 @@ def get_terremotos():
     """
     
     for earthquake in earthquakes:
-        row_class = "highlight" if earthquake["percibido"] else ""
         html_content += f"""
-            <tr class="{row_class}">
+            <tr>
                 <td><span>{earthquake['date']}</span><br>{earthquake['location']}</td>
                 <td>{earthquake['depth']}</td>
                 <td>{earthquake['magnitude']}</td>
@@ -65,5 +64,19 @@ def get_terremotos():
     return html_content
 
 @app.get("/api/terremotos")
-def get_terremotos_json():
-    return {"terremotos": earthquakes}
+def get_terremotos_json(latitud: float = None, longitud: float = None, timestamp: str = None, limit: int = 10):
+    if latitud is not None or longitud is not None or timestamp is not None:
+        terremoto_solicitado = []
+        for terremoto in earthquakes:
+            terremoto_encontrado = True
+            if latitud != terremoto.get("latitud"):
+                terremoto_encontrado = False
+            if longitud != terremoto.get("longitud"):
+                terremoto_encontrado = False
+            
+            # Falta ver tema timestamp
+            
+            if terremoto_encontrado:
+                terremoto_solicitado.append(terremoto)
+    
+    return {"terremotos": terremoto_solicitado[:limit]}
