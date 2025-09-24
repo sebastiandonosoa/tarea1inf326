@@ -10,6 +10,7 @@ from tabulate import tabulate
 # pip install geopy
 # pip install "fastapi[standard]"
 # pip install requests
+# pip install tabulate
 
 
 class Suscribers:
@@ -65,7 +66,7 @@ class Suscribers:
                 self.consultar_datos(latitud=json_lat, longitud = json_lon, timestamp = json_tim )
             else:
                 print(f"La distancia entre yo (suscriptor) y la ubicación del terremoto es de {distance:.2f} KM")
-                print("No soy válido")
+                print("No estoy a menos 500 kilometros.")
 
             
         
@@ -94,7 +95,6 @@ class Suscribers:
             response = requests.get(api_url, params=params)
             response.raise_for_status()
 
-            # Acá podriamos hacer lógica para obtener los último 10 terremotos quizás.... (modificar fastAPI)
             data = response.json()
             terremotos = data.get("terremotos", [])
 
@@ -152,7 +152,6 @@ class Suscribers:
         self.close()
 
 if __name__ == "__main__":
-    #with  Suscribers(latitud=-33.04927422413275, longitud=-71.58683350800092, exchange_name="Servicio_Temblores") as suscriber:
     latitud = float(input("Ingrese la latitud de su ubicacion: "))
     longitud = float(input("Ingrese la longitud de su ubicacion: "))
     queue_name = input("Ingrese la ciudad de su ubicación, que será el nombre de la cola: ")
