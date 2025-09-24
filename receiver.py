@@ -12,14 +12,14 @@ from geopy.distance import geodesic
 
 
 class Suscribers:
-    def __init__(self, host: str = "localhost", exchange_name: str = "message_ex", latitud: Optional[float] = None, longitud: Optional[float] = None):
+    def __init__(self, host: str = "localhost", exchange_name: Optional[str] = "message_ex", queue_name: Optional[str] = None, latitud: Optional[float] = None, longitud: Optional[float] = None):
         self.host = host
         self.exchange_name = exchange_name
         self.latitud = latitud
         self.longitud = longitud
         self.connection = None
         self.channel = None
-        self.queue_name = None
+        self.queue_name = queue_name
     
     def connect(self):
         self.connection = pika.BlockingConnection(pika.ConnectionParameters(self.host))
@@ -27,8 +27,8 @@ class Suscribers:
 
         self.channel.exchange_declare(exchange=self.exchange_name, exchange_type = "fanout")
 
-        result = self.channel.queue_declare(queue="", exclusive = True)
-        self.queue_name = result.method.queue
+        result = self.channel.queue_declare(queue= self.queue_name, exclusive = True)
+        #self.queue_name = result.method.queue
 
         self.channel.queue_bind(exchange=self.exchange_name, queue=self.queue_name)
     
@@ -49,8 +49,6 @@ class Suscribers:
         self.channel.start_consuming()
     
     def _default_callback(self, ch, method, properties, body):
-        #print(body.decode())
-        #distance = self.calculate_geodesic_distance(40.7128,-74.0060,34.0522,-118.2437)
         try:
             dato_terremoto = json.loads(body.decode())
 
@@ -119,6 +117,12 @@ class Suscribers:
         self.close()
 
 if __name__ == "__main__":
-    with  Suscribers(latitud=-33.04927422413275, longitud=-71.58683350800092) as suscriber:
+    #with  Suscribers(latitud=-33.04927422413275, longitud=-71.58683350800092, exchange_name="Servicio_Temblores") as suscriber:
+    latitud = float(input("Ingrese la latitud de su ubicacion: "))
+    longitud = float(input("Ingrese la longitud de su ubicacion: "))
+    queue_name = input("Ingrese la ciudad de su ubicación, que será el nombre de la cola: ")
+
+    with  Suscribers(latitud=latitud, longitud=longitud, exchange_name="Servicio_Temblores", queue_name=queue_name) as suscriber:
         suscriber.subscribe()
+
 

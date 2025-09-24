@@ -5,7 +5,7 @@ from datetime import datetime
 
 class Publisher:
 
-    def __init__(self, host: str = "localhost", exchange_name: str = "message_ex", exchange_type: str = "fanout"):
+    def __init__(self, host: str = "localhost", exchange_name: Optional[str] = "message_ex", exchange_type: str = "fanout"):
         self.host = host
         self.exchange_name = exchange_name
         self.exchange_type = exchange_type
@@ -65,7 +65,7 @@ class Publisher:
 
 if __name__ == "__main__":
 
-    publisher = Publisher()
+    publisher = Publisher(exchange_name="Servicio_Temblores")
     publisher.connect()
     publisher.publish_earthquake_data(  ## Coordenadas corresponden al Estadio Nacional, Santiago de Chile.
         latitud=-33.46486016217548,
