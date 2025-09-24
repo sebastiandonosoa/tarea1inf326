@@ -67,9 +67,13 @@ if __name__ == "__main__":
 
     publisher = Publisher(exchange_name="Servicio_Temblores")
     publisher.connect()
-    publisher.publish_earthquake_data(  ## Coordenadas corresponden al Estadio Nacional, Santiago de Chile.
-        latitud=-33.15,
-        longitud=-71.40,
+
+    latitud = float(input("Ingrese la latitud en que ocurrio el terremoto"))
+    longitud = float(input("Ingrese la longitud en que ocurrio el terremoto"))
+
+    publisher.publish_earthquake_data(  ## Coordenadas latitud =-33.15, longitud = -71.40, corresponden al Estadio Nacional, Santiago de Chile.
+        latitud,
+        longitud,
     )
     publisher.close()
 
