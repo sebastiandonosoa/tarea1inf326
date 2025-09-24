@@ -68,8 +68,8 @@ if __name__ == "__main__":
     publisher = Publisher(exchange_name="Servicio_Temblores")
     publisher.connect()
     publisher.publish_earthquake_data(  ## Coordenadas corresponden al Estadio Nacional, Santiago de Chile.
-        latitud=-33.46486016217548,
-        longitud=-70.61077585158479,
+        latitud=-33.15,
+        longitud=-71.40,
     )
     publisher.close()
 

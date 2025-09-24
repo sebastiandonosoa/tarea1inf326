@@ -4,6 +4,7 @@ import requests
 
 from typing import Callable, Optional
 from geopy.distance import geodesic
+from tabulate import tabulate
 
 # Pip install pika
 # pip install geopy
@@ -54,13 +55,14 @@ class Suscribers:
 
             json_lat = dato_terremoto["coordenadas"]["latitud"]
             json_lon = dato_terremoto["coordenadas"]["longitud"]
+            json_tim = dato_terremoto["timestamp"]
 
             # Para facilitar las pruebas, evitaré hacer comprobaciones de seguridad (i.e. ver que tenga valores los atributos de latitud y longitud de la clase.)
             distance = self.calculate_geodesic_distance(self.latitud, self.longitud, json_lat, json_lon)
             if distance <= 500:
                 print(f"La distancia entre yo (suscriptor) y la ubicación del terremoto es de {distance:.2f} KM")
                 print("soy válido\n")
-                self.consultar_datos()
+                self.consultar_datos(latitud=json_lat, longitud = json_lon, timestamp = json_tim )
             else:
                 print(f"La distancia entre yo (suscriptor) y la ubicación del terremoto es de {distance:.2f} KM")
                 print("No soy válido")
@@ -79,16 +81,49 @@ class Suscribers:
         return distance
     
     # La siguiente función tiene como propósito consultar los datos de fastAPI para una posterior implementación utilizando los criterios de la tarea.
-    def consultar_datos(self, api_url: str = "http://localhost:8000/api/terremotos"):
+    def consultar_datos(self, api_url: str = "http://localhost:8000/api/terremotos", latitud = None, longitud = None, timestamp = None):
         try:
-            response = requests.get(api_url)
+            params = {}
+            if latitud is not None:
+                params['latitud'] = latitud
+            if longitud is not None:
+                params['longitud'] = longitud
+            
+            # Falta ver tema timestamp
+
+            response = requests.get(api_url, params=params)
             response.raise_for_status()
 
+            # Acá podriamos hacer lógica para obtener los último 10 terremotos quizás.... (modificar fastAPI)
             data = response.json()
             terremotos = data.get("terremotos", [])
 
+            
+            tabla = []
             for terremoto in terremotos:
-                print(f"- {terremoto['location']}: Magnitud {terremoto['magnitude']}")
+                #percibido = True
+
+                #if latitud is not None and terremoto.get("latitud") != latitud:
+                    #percibido = False
+                #if longitud is not None and terremoto.get("longitud") != longitud:
+                    #percibido = False
+
+                #if percibido or (latitud is None and longitud is None):
+                fila = [
+                    terremoto.get("location", "N/A"),
+                    terremoto.get("magnitude", "N/A"),
+                    terremoto.get("depth", "N/A"),
+                    terremoto.get("date", "N/A"),
+                    terremoto.get("latitud", "N/A"),
+                    terremoto.get("longitud", "N/A")
+                ]
+
+                    #fila = [f"*** {campo} ***" for campo in fila]
+
+                tabla.append(fila) 
+
+            
+            print(tabulate(tabla, headers=["Ubicación", "Magnitud", "Profundidad", "Fecha","Latitud","Longitud",], tablefmt="fancy_grid"))
 
             return terremotos
 
