@@ -50,9 +50,25 @@ En este caso, se ha probado con los siguientes datos: **Arica (coordenadas lat=-
 
 Luego de dejar esperando cada instancia, se debe ejecutar el código de *publisher.py*, el cual también preguntará la latitud y longitud del terremoto que se quiere publicar y recibiran los suscriptores en el **exchange** "Servicio_Temblores".
 
-Se prefirio utilizar 5 ejecuciones del mismo código de suscriptor, antes de 5 códigos distintos para cada ciudad que contengan la latitud y longitud que ya estan guardados antes de la ejecución, pues da más libertad para probar distintas ciudades, de igual forma que en el publisher, pese a que sea más trabajo el ingresar por cada uno los datos anteriormente mencionados.
-
- ````
+````
 python receiver.py
 python publish.py
  ````
+
+## Consideraciones
+
+1. Se prefirio utilizar 5 ejecuciones del mismo código de suscriptor, antes de 5 códigos distintos para cada ciudad que contengan la latitud y longitud que ya estan guardados antes de la ejecución, pues da más libertad para probar distintas ciudades, de igual forma que en el publisher, pese a que sea más trabajo el ingresar por cada uno los datos anteriormente mencionados.
+
+2. Se debe considerar que en la API, solo están guardados los siguientes temblores en formato JSON:
+
+ ````
+earthquakes = [
+    {"magnitude": 7.8, "location": "23 km al SE de Valparaíso", "date": "2024-03-15 18:29:13", "depth": "135 km", "latitud": -33.15, "longitud": -71.40},
+    {"magnitude": 6.2, "location": "129 km al NE de Santiago", "date": "2024-02-28 18:02:59", "depth": "12 km", "latitud": -32.50, "longitud": -69.80},
+    {"magnitude": 8.1, "location": "81 km al NO de Antofagasta", "date": "2024-01-10 16:34:34", "depth": "45 km", "latitud": -23.20, "longitud": -70.80},
+    {"magnitude": 5.9, "location": "20 km al N de Concepción", "date": "2024-01-05 14:37:37", "depth": "49 km", "latitud": -36.60, "longitud": -72.95},
+    {"magnitude": 7.3, "location": "68 km al S de Iquique", "date": "2023-12-20 14:31:27", "depth": "28 km", "latitud": -20.80, "longitud": -70.20},
+    {"magnitude": 6.7, "location": "54 km al E de La Serena", "date": "2023-11-18 13:50:44", "depth": "40 km", "latitud": -29.90, "longitud": -70.20},
+]
+ ````
+3. Se considero que en vez de mensajes solo en formato *String* como se mostro en la clase, era mejor que los mensajes fueran en formato *JSON*, que se utiliza varias veces en estos contextos y es más eficiente al querer obtener ciertos datos.
