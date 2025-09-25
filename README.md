@@ -3,7 +3,7 @@
 ## Integrantes
 
 - Pablo Arellano, ROL: **202073**
-- Sebastian Donoso, ROL: **202073**
+- Sebastian Donoso, ROL: **201921090-4**
 - Cristóbal Pérez: ROL: **202073105-5**
 
 ## Instalación RabbitMQ en Ubuntu
@@ -71,4 +71,4 @@ earthquakes = [
     {"magnitude": 6.7, "location": "54 km al E de La Serena", "date": "2023-11-18 13:50:44", "depth": "40 km", "latitud": -29.90, "longitud": -70.20},
 ]
  ````
-3. Se considero que en vez de mensajes solo en formato *String* como se mostro en la clase, era mejor que los mensajes fueran en formato *JSON*, que se utiliza varias veces en estos contextos y es más eficiente al querer obtener ciertos datos.
+3. Se considero que en vez de mensajes solo en formato *String* como se mostró en la clase, era mejor que los mensajes fueran en formato *JSON*, que se utiliza varias veces en estos contextos y es más eficiente al querer obtener ciertos datos.
