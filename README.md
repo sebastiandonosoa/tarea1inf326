@@ -44,8 +44,7 @@ Después, se debe ejecutar el código de *receiver.py*, una vez por cada suscrip
 
 2- **Longitud**: Se debe entregar la coordenada de longitud de la ciudad, se usará para calcular la distancia con respecto al terremoto que se publicará.
 
-3- **Nombre ciudad**: Se debe entregar el nombre de la ciudad que se está considerando en las coordenadas, esto solo afecta al nombre de la cola que tendrá asignado el suscriptor en *RabbitMQ*
- luego, ejecutamos receiver.py, que se mantiene a la espera de mensajes, y finalmente, ejecutamos publish.py, que se encarga de enviar un "anuncio" de terremoto falso.
+3- **Nombre ciudad**: Se debe entregar el nombre de la ciudad que se está considerando en las coordenadas, esto solo afecta al nombre de la cola que tendrá asignado el suscriptor en *RabbitMQ*.
 
 En este caso, se ha probado con los siguientes datos: **Arica (coordenadas lat=-18.4746, long=-70.29792), Coquimbo (coordenadas lat=-29.95332, long=-71.33947), Valparaiso (coordenadas lat=-33.036, long=-71.62963), Concepción (coordenadas lat=-36.82699, long=-73.04977) y Punta Arenas (coordenadas lat=-53.16282, long=-70.90922)**.
 
