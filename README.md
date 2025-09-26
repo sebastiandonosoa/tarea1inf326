@@ -32,13 +32,13 @@ pip install tabulate # Para crear la tabla en la línea de comandos
 
 ## Ejecución
 
-Se recomienda ejecutar main.py, el cuál contiene el servicio de fastAPI. Para eso, debemos ejecutar main.py como:
+Se recomienda ejecutar primero "main.py", el cuál contiene el servicio de fastAPI. Para eso, debemos ejecutar main.py como:
 
 ````
 fastapi dev main.py
 ````
 
-Después, se debe ejecutar el código de *receiver.py*, una vez por cada suscriptor que se quiera tener, en este caso serían 5. Cada vez que se ejecute el código de Pyhton, se preguntará lo siguiente:
+Después, se debe ejecutar el código de *receiver.py*, una vez por cada suscriptor que se quiera tener, en este caso serían 5. Cada vez que se ejecute el código de Python, se preguntará lo siguiente:
 
 1- **Latitud**: Se debe entregar la coordenada de latitud de la ciudad, se usará para calcular la distancia con respecto al terremoto que se publicará.
 
@@ -48,7 +48,20 @@ Después, se debe ejecutar el código de *receiver.py*, una vez por cada suscrip
 
 En este caso, se ha probado con los siguientes datos: **Arica (coordenadas lat=-18.4746, long=-70.29792), Coquimbo (coordenadas lat=-29.95332, long=-71.33947), Valparaiso (coordenadas lat=-33.036, long=-71.62963), Concepción (coordenadas lat=-36.82699, long=-73.04977) y Punta Arenas (coordenadas lat=-53.16282, long=-70.90922)**.
 
-Luego de dejar esperando cada instancia, se debe ejecutar el código de *publisher.py*, el cual también preguntará la latitud y longitud del terremoto que se quiere publicar y recibiran los suscriptores en el **exchange** "Servicio_Temblores".
+Luego de dejar esperando cada instancia, se debe ejecutar el código de *publisher.py*, el cual preguntará:
+
+1. **Latitud**: Coordenada de la latitud en donde se ha producido el sismo.
+
+2. **Longitud**: Coordenada de la longitud en donde se ha producido el sismo.
+
+3. **Localidad**: Ubicación (aproximada) de donde se ha producido el sismo.
+
+4. **Magnitud**: Magnitud en escala de Ritcher del sismo.
+
+5. **Profundidad_Sismo**: Profundidad (ya en kilómetros) del sismo. NO INGRESAR UNIDAD.
+
+Al publicar un nuevo sismo, la información detallada se incorporará a la lista de sismos existentes en la API, y se enviará un aviso a los suscriptores que sólo incorporará la latitud, longitud y timestamp, para realizar el filtrado correspondiente. Posteriormente, los suscriptores si están interesados por el sismo, podrán consultar a la API. Se recibirán los suscriptores en el **exchange** "Servicio_Temblores".
+
 
 ````
 python receiver.py
@@ -71,4 +84,8 @@ earthquakes = [
     {"magnitude": 6.7, "location": "54 km al E de La Serena", "date": "2023-11-18 13:50:44", "depth": "40 km", "latitud": -29.90, "longitud": -70.20},
 ]
  ````
-3. Se considero que en vez de mensajes solo en formato *String* como se mostró en la clase, era mejor que los mensajes fueran en formato *JSON*, que se utiliza varias veces en estos contextos y es más eficiente al querer obtener ciertos datos.
+ Estos son la base, pero al publicar nuevos sismos la lista se irá actualizando.
+
+3. Se considero que en vez de mensajes sólo en formato *String* como se mostró en la clase, era mejor que los mensajes fueran en formato *JSON*, que se utiliza varias veces en estos contextos y es más eficiente al querer obtener ciertos datos.
+
+

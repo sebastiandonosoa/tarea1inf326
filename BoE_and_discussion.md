@@ -1,0 +1,5 @@
+# Sobre Back of the Envelope
+
+BoE, es una forma de estimar la carga que se presentará nuestro sistema en condiciones particulares. En nuestro caso, pensaremos en el peor caso, que corresponderá a cuando el sismo registrado es de gran magnitud, y a su vez, es cerca de una ciudad con muchos habitantes, donde nuestra suposición es que en estas ciudades existirán más usuarios esperando obtener información de la API. (No consideramos la publicación por parte del publisher, ya que esta será única siempre, pero los llamados a la API no). 
+
+Una forma para determinar la carga, es determinar la cantidad de bits que la API envía por petición (nuestro caso son 65 carácteres, que si asumimos que 1 carácteres son 1 byte, tenemos 65 bytes). Además, si consideramos una sobre carga del 30% en lo que sería headers y "adornos" del mensaje, llegamos a una cantidad de aproximadamente 85 bytes por solicitud. Para finalizar, en nuestro caso en particular, si consideramos Santiago como la ciudad que más solicitudes hará, podemos estimar que se harán siete millones de solicitudes en el momento peak (población aproximada de Santiago).
