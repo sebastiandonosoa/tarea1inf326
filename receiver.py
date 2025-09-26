@@ -27,9 +27,9 @@ class Suscribers:
         self.connection = pika.BlockingConnection(pika.ConnectionParameters(self.host))
         self.channel = self.connection.channel()
 
-        self.channel.exchange_declare(exchange=self.exchange_name, exchange_type = "fanout")
+        self.channel.exchange_declare(exchange=self.exchange_name, exchange_type = "fanout", durable = True)
 
-        result = self.channel.queue_declare(queue= self.queue_name, exclusive = True)
+        result = self.channel.queue_declare(queue= self.queue_name, exclusive = True, durable = True)
 
         self.channel.queue_bind(exchange=self.exchange_name, queue=self.queue_name)
     
@@ -41,10 +41,11 @@ class Suscribers:
             callback = self._default_callback
 
         print("Esperando mensajes...")
+        self.channel.basic_qos(prefetch_count=1)
         self.channel.basic_consume(
             queue = self.queue_name,
             on_message_callback=callback,
-            auto_ack=True
+            auto_ack=False # Aseguramos que los suscriptores hayan recibido el mensaje !!!
         )
 
         self.channel.start_consuming()
@@ -52,6 +53,8 @@ class Suscribers:
     def _default_callback(self, ch, method, properties, body):
         try:
             dato_terremoto = json.loads(body.decode())
+
+            
 
             json_lat = dato_terremoto["coordenadas"]["latitud"]
             json_lon = dato_terremoto["coordenadas"]["longitud"]
@@ -63,7 +66,8 @@ class Suscribers:
                 self.consultar_datos(latitud=json_lat, longitud = json_lon, timestamp = json_tim )
             else:
                 print(f"\nLa distancia entre {queue_name} y la ubicación del terremoto es de {distance:.2f} KM. No es necesario consultar datos.")
-                
+            
+            ch.basic_ack(delivery_tag=method.delivery_tag)
 
         except (json.JSONDecodeError, KeyError) as e:
             print(f"Error {e}")

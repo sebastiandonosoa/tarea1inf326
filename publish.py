@@ -17,7 +17,7 @@ class Publisher:
     def connect(self):
         self.connection = pika.BlockingConnection(pika.ConnectionParameters(self.host))
         self.channel = self.connection.channel()
-        self.channel.exchange_declare(exchange=self.exchange_name, exchange_type = self.exchange_type)
+        self.channel.exchange_declare(exchange=self.exchange_name, exchange_type = self.exchange_type, durable = True)
     
     def publish_message(self, message: str, routing_key: str = ""):
         if not self.channel:
@@ -50,7 +50,10 @@ class Publisher:
         self.channel.basic_publish(
             exchange=self.exchange_name,
             routing_key="", 
-            body=message
+            body=message,
+            properties=pika.BasicProperties(
+                delivery_mode=2,
+            )
         )
     
     def close(self):
