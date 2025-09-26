@@ -76,7 +76,7 @@ if __name__ == "__main__":
 ]
 
     print("\nPara fines de simulación, a continuación se entregará una base de datos ficticia ubicada en la API, para que puedas guiarte.")
-    print(tabulate(earthquakes, headers=["Magnitud", "Locación", "Fecha", "Profundidad","Latitud","Longitud",], tablefmt="fancy_grid"))
+    print(tabulate(earthquakes, headers=["Locación", "Magnitud", "Fecha", "Profundidad","Latitud","Longitud",], tablefmt="fancy_grid"))
 
     publisher = Publisher(exchange_name="Servicio_Temblores")
     publisher.connect()

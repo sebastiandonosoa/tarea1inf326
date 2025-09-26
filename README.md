@@ -88,4 +88,4 @@ earthquakes = [
 
 3. Se considero que en vez de mensajes sólo en formato *String* como se mostró en la clase, era mejor que los mensajes fueran en formato *JSON*, que se utiliza varias veces en estos contextos y es más eficiente al querer obtener ciertos datos.
 
-
+4. Cada vez que se ejecuta el publisher y se le dan los datos de un terremoto, se guarda como fecha el momento actual, esta quedara con un formato de tiempo universal, es decir, en **UTC=0**
