@@ -2,7 +2,7 @@
 
 ## Integrantes
 
-- Pablo Arellano, ROL: **202073**
+- Pablo Arellano, ROL: **202073034-2**
 - Sebastian Donoso, ROL: **201921090-4**
 - Cristóbal Pérez: ROL: **202073105-5**
 
